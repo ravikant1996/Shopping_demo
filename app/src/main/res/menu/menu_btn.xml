@@ -1,0 +1,29 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/wallet"
+        android:orderInCategory="100"
+        android:title="₹ 0"
+        app:showAsAction="always"/>
+
+    <item
+        android:id="@+id/cart"
+        android:orderInCategory="200"
+        android:icon="@mipmap/ic_cart_full"
+        app:showAsAction="always"
+        android:title="Cart" />
+    <item
+        android:id="@+id/lllogout"
+        android:orderInCategory="200"
+        android:icon="@drawable/ic_outline_more_vert_24"
+        app:showAsAction="always"
+        android:title="TODO">
+        <menu>
+            <item
+                android:id="@+id/logout"
+                android:icon="@drawable/logout"
+                android:title="Sign Out" />
+        </menu>
+    </item>
+</menu>
