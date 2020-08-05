@@ -4,9 +4,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.firebase.ui.auth.AuthUI;
@@ -23,7 +20,6 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 
@@ -110,7 +106,6 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "Welcome! " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                     getMoney();
                     Bundle bundle = new Bundle();
-                    bundle.putInt("MONEY", money);
                     intent.putExtras(bundle);
                     startActivity(intent);
                     finish();
@@ -159,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
                 try {
                     if (snapshot.exists()) {
                         money = snapshot.getValue(Integer.class);
+                        sessionManager.CreateWalletBalanceSession(String.valueOf(money));
                         Log.e("Test8", "Test8");
                     }
                 } catch (NumberFormatException e) {

@@ -107,12 +107,15 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         Log.e("Test4", "Test4");
 
 
+
         try {
             Log.e("Test5", "Test5");
 
             FirebaseUser user;
             user = FirebaseAuth.getInstance().getCurrentUser();
             try {
+                HashMap<String, String> balance = session.getWalletBalance();
+                money= Integer.parseInt(balance.get(session.KEY_MONEY));
                 getMoney();
                 Log.e("Test6", "Test6");
 
