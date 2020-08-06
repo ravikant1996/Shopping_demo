@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         setSupportActionBar(toolbar);
         toolbar.setTitle("Home");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
+        getMoney();
+
 
         Log.e("Test1", "Test1");
         session = new SessionManager(getApplicationContext());
@@ -114,9 +116,8 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
             FirebaseUser user;
             user = FirebaseAuth.getInstance().getCurrentUser();
             try {
-                HashMap<String, String> balance = session.getWalletBalance();
-                money= Integer.parseInt(balance.get(session.KEY_MONEY));
-                getMoney();
+//                HashMap<String, String> balance = session.getWalletBalance();
+//                money= Integer.parseInt(balance.get(session.KEY_MONEY));
                 Log.e("Test6", "Test6");
 
             } catch (NumberFormatException | NullPointerException e) {

@@ -102,11 +102,8 @@ public class LoginActivity extends AppCompatActivity {
                 if (user != null) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
 //                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
+//                    getMoney();
                     Toast.makeText(this, "Welcome! " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
-                    getMoney();
-                    Bundle bundle = new Bundle();
-                    intent.putExtras(bundle);
                     startActivity(intent);
                     finish();
 
@@ -141,36 +138,39 @@ public class LoginActivity extends AppCompatActivity {
         }
     }
 
-    private void getMoney() {
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = user.getUid();
-        Log.e("Test7", "Test7");
-
-        final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Transaction_History").child(userId);
-        Query query = mRef.child("totalMoney");
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                try {
-                    if (snapshot.exists()) {
-                        money = snapshot.getValue(Integer.class);
-                        sessionManager.CreateWalletBalanceSession(String.valueOf(money));
-                        Log.e("Test8", "Test8");
-                    }
-                } catch (NumberFormatException e) {
-                    e.printStackTrace();
-                } catch (RuntimeExecutionException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-
-    }
+//    private void getMoney() {
+//        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+//        String userId = user.getUid();
+//        Log.e("Test7", "Test7");
+//
+//        final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Transaction_History").child(userId);
+//        Query query = mRef.child("totalMoney");
+//        query.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(@NonNull DataSnapshot snapshot) {
+//                try {
+//                    if (snapshot.exists()) {
+//                        money = snapshot.getValue(Integer.class);
+//                        Log.e("Test8", "Test8");
+//                    }else {
+//                        money = 0;
+//                    }
+//                    sessionManager.CreateWalletBalanceSession(String.valueOf(money));
+//
+//                } catch (NumberFormatException e) {
+//                    e.printStackTrace();
+//                } catch (RuntimeExecutionException e) {
+//                    e.printStackTrace();
+//                }
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        });
+//
+//    }
 
 
 }
