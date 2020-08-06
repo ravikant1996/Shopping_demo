@@ -80,22 +80,17 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Home");
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getMoney();
 
-
-        Log.e("Test1", "Test1");
         session = new SessionManager(getApplicationContext());
         session.isLoggedIn();
         session.checkLogin();
-        Log.e("Test2", "Test2");
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         actionBarDrawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.Open, R.string.Close);
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
-        Log.e("Test3", "Test3");
 
         navigationView = findViewById(R.id.enduser_navigation);
         recyclerView = findViewById(R.id.recyclerView);
@@ -106,23 +101,13 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         Profile_image = headerView.findViewById(R.id.profile_image);
         Name = (TextView) headerView.findViewById(R.id.name);
         EmailId = (TextView) headerView.findViewById(R.id.email);
-        Log.e("Test4", "Test4");
 
 
 
         try {
-            Log.e("Test5", "Test5");
 
             FirebaseUser user;
             user = FirebaseAuth.getInstance().getCurrentUser();
-            try {
-//                HashMap<String, String> balance = session.getWalletBalance();
-//                money= Integer.parseInt(balance.get(session.KEY_MONEY));
-                Log.e("Test6", "Test6");
-
-            } catch (NumberFormatException | NullPointerException e) {
-                e.printStackTrace();
-            }
 
             HashMap<String, String> details = session.getUserDetails();
             String mob = details.get(SessionManager.KEY_PHONE);
@@ -208,7 +193,6 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
     private void getMoney() {
         final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String userId = user.getUid();
-        Log.e("Test7", "Test7");
 
         final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Transaction_History").child(userId);
         Query query = mRef.child("totalMoney");
@@ -218,7 +202,6 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
                 try {
                     if (snapshot.exists()) {
                         money = snapshot.getValue(Integer.class);
-                        Log.e("Test8", "Test8");
                     }
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -264,35 +247,9 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_btn, menu);
-//        menu.findItem(R.id.logout).setIcon(R.mipmap.ic_logout);
-//        final MenuItem item = menu.findItem(R.id.wallet);
-//        menu.findItem(R.id.wallet)
-//                .setTitle("₹ " + showWallet);
-//        MenuItemCompat.getActionView(item).setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                addbalance();
-//            }
-//        });
-//        MenuItem walletItem=menu.getItem(R.id.wallet); // here itemIndex is int
-//        item.setTitle("" + money);
+
         return true;
     }
-
-//    public void showProfileMenuPopup(View v) {
-//        PopupMenu popup = new PopupMenu(getApplicationContext(), v);
-//        MenuInflater inflater = popup.getMenuInflater();
-//        inflater.inflate(R.menu.menu_btn, popup.getMenu());
-//        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
-//            @Override
-//            public boolean onMenuItemClick(MenuItem menuItem) {
-//                Toast.makeText(MainActivity.this, "Wallet clicked", Toast.LENGTH_SHORT).show();
-//
-//                return false;
-//            }
-//        });
-//        popup.show();
-//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -304,8 +261,6 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         //noinspection SimplifiableIfStatement
         if (id == R.id.wallet) {
             addbalance();
-//            menu.findItem(R.id.wallet)
-//                    .setTitle("₹ " + money);
             return true;
         } else if (id == R.id.logout) {
             logout();
@@ -391,7 +346,6 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
 
                 mRef.child("totalMoney").setValue(money);
                 mRef.child(keyId).setValue(trans);
-//                session.addFavorite(trans);
                 Toast.makeText(MainActivity.this, "Added", Toast.LENGTH_SHORT).show();
             }
 
@@ -401,28 +355,6 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
             }
         });
     }
-
-  /*  private void getCount() {
-        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        String userId = user.getUid();
-
-        final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Transaction_History");
-        Query query = mRef.child(userId);
-        query.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.exists()) {
-                    count = snapshot.getChildrenCount();
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-*/
 
     private void logout() {
         AuthUI.getInstance().signOut(this).addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -460,7 +392,6 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
                 dateoftransaction(status, name, price, image);
                 Balance.setText("₹ " + money);
 
-//            showWallet = money;
                 Toast.makeText(context, "Bought", Toast.LENGTH_SHORT).show();
             } else {
                 Toast.makeText(context, "Recharge your wallet", Toast.LENGTH_SHORT).show();

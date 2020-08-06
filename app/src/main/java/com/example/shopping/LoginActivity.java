@@ -9,25 +9,16 @@ import android.widget.Toast;
 import com.firebase.ui.auth.AuthUI;
 import com.firebase.ui.auth.ErrorCodes;
 import com.firebase.ui.auth.IdpResponse;
-import com.google.android.gms.tasks.RuntimeExecutionException;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginActivity extends AppCompatActivity {
-    int money = 0;
     private static final int MY_REQUEST_CODE = 7117;
     public static String TAG = "MainActivity";
     FirebaseUser user;
@@ -43,14 +34,6 @@ public class LoginActivity extends AppCompatActivity {
         sessionManager = new SessionManager(getApplicationContext());
         logintype_check();
 
-     /*   providers = Arrays.asList(
-//                new AuthUI.IdpConfig.EmailBuilder().build(),
-                new AuthUI.IdpConfig.PhoneBuilder().build(),
-                new AuthUI.IdpConfig.GoogleBuilder().build());
-
-        showSignInOptions();*/
-
-
     }
 
     public void logintype_check() {
@@ -58,7 +41,7 @@ public class LoginActivity extends AppCompatActivity {
             Intent intent = new Intent(LoginActivity.this, MainActivity.class);
             startActivity(intent);
             finish();
-        }else {
+        } else {
             providers = Arrays.asList(
 //                new AuthUI.IdpConfig.EmailBuilder().build(),
                     new AuthUI.IdpConfig.PhoneBuilder().build(),
@@ -101,8 +84,6 @@ public class LoginActivity extends AppCompatActivity {
                 user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
                     Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                    getMoney();
                     Toast.makeText(this, "Welcome! " + user.getDisplayName(), Toast.LENGTH_SHORT).show();
                     startActivity(intent);
                     finish();
@@ -137,40 +118,5 @@ public class LoginActivity extends AppCompatActivity {
             }
         }
     }
-
-//    private void getMoney() {
-//        final FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-//        String userId = user.getUid();
-//        Log.e("Test7", "Test7");
-//
-//        final DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Transaction_History").child(userId);
-//        Query query = mRef.child("totalMoney");
-//        query.addListenerForSingleValueEvent(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                try {
-//                    if (snapshot.exists()) {
-//                        money = snapshot.getValue(Integer.class);
-//                        Log.e("Test8", "Test8");
-//                    }else {
-//                        money = 0;
-//                    }
-//                    sessionManager.CreateWalletBalanceSession(String.valueOf(money));
-//
-//                } catch (NumberFormatException e) {
-//                    e.printStackTrace();
-//                } catch (RuntimeExecutionException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
-//
-//    }
-
 
 }

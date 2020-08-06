@@ -57,20 +57,11 @@ public class TransactionHistory extends AppCompatActivity {
             money = String.valueOf(bundle.getInt("MONEY"));
             UID = bundle.getString("UID");
             Balance.setText("₹ "+money);
-            //     Log.e(TAG, usertype);
-            //     Log.e(TAG, UID);
         }catch (Exception e){
             e.printStackTrace();
         }
 
-
-        session = new SessionManager(getApplicationContext());
-        session.getFavorites();
-
-
         arrayList = new ArrayList<transaction>();
-
-
 
         recycler1();
     }
