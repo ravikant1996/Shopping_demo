@@ -55,14 +55,16 @@ public class companyAdapter extends RecyclerView.Adapter<companyAdapter.ViewHold
                 public void onClick(View view) {
                     String name = arrayList.get(position).getName();
                     Intent intent = new Intent(context, ProductViewActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     Bundle bundle = new Bundle();
                     bundle.putString("CNAME", name);
                     intent.putExtras(bundle);
                     context.startActivity(intent);
-//                    ((Activity) context).finish();
                 }
             });
         } catch (NullPointerException e) {
+            e.printStackTrace();
+        } catch (RuntimeException e) {
             e.printStackTrace();
         }
     }
