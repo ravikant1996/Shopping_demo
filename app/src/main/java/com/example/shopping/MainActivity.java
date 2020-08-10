@@ -50,7 +50,7 @@ import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adapter {
+public class MainActivity extends AppCompatActivity {
     final Context context = this;
     int money = 0;
     TextView Balance;
@@ -62,10 +62,9 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
     private static final int TIME_INTERVAL = 4000;
     private long mBackPressed;
     LinearLayoutManager layoutManager;
-
     RecyclerView recyclerView;
-    ItemsAdapter itemsAdapter;
-    ArrayList<items> itemsList = new ArrayList<>();
+    companyAdapter itemsAdapter;
+    ArrayList<company> itemsList = new ArrayList<>();
     SessionManager session;
 
     DrawerLayout drawerLayout;
@@ -82,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         getMoney();
+        recyclerView = findViewById(R.id.recyclerView);
+        recyclerView();
 
         session = new SessionManager(getApplicationContext());
         session.isLoggedIn();
@@ -93,15 +94,12 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         actionBarDrawerToggle.syncState();
 
         navigationView = findViewById(R.id.enduser_navigation);
-        recyclerView = findViewById(R.id.recyclerView);
-        itemsListfunc();
-        recyclerView();
+
 
         View headerView = navigationView.inflateHeaderView(R.layout.layout_header);
         Profile_image = headerView.findViewById(R.id.profile_image);
         Name = (TextView) headerView.findViewById(R.id.name);
         EmailId = (TextView) headerView.findViewById(R.id.email);
-
 
 
         try {
@@ -219,26 +217,35 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
     }
 
     private void recyclerView() {
-        recyclerView.setHasFixedSize(true);
-        layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        itemsAdapter = new ItemsAdapter(itemsList, this);
-        recyclerView.setAdapter(itemsAdapter);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference().child("Company");
+        reference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot areaSnapshot : snapshot.getChildren()) {
+                    company details = areaSnapshot.getValue(company.class);
+                    itemsList.add(details);
+                }
+                recyclerView.setHasFixedSize(true);
+                layoutManager = new LinearLayoutManager(getApplicationContext());
+                recyclerView.setLayoutManager(layoutManager);
+                recyclerView.setItemAnimator(new DefaultItemAnimator());
+                itemsAdapter = new companyAdapter(itemsList, getApplicationContext());
+                recyclerView.setAdapter(itemsAdapter);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
     }
 
-    private void itemsListfunc() {
-        items data = new items("9499", "Infinix Hot 9 (Violet, 64 GB)  (4 GB RAM)", "https://rukminim1.flixcart.com/image/416/416/k8g8knk0/mobile/m/b/z/infinix-hot-9-x655d-original-imafqgr9j7gh32zq.jpeg?q=70");
-        itemsList.add(data);
-        data = new items("9999", "Motorola G8 Power Lite (Royal Blue, 64 GB)  (4 GB RAM)", "https://rukminim1.flixcart.com/image/416/416/kae95e80/mobile/2/z/r/motorola-g8-power-lite-pajc0008in-original-imafrz85cmz2ycx8.jpeg?q=70");
-        itemsList.add(data);
-        data = new items("8999", "Realme Narzo 10A (So White, 32 GB)  (3 GB RAM)", "https://rukminim1.flixcart.com/image/416/416/k8ddoy80/mobile/u/g/w/realme-narzo-10a-rmx2020-original-imafqechxsprgfgr.jpeg?q=70");
-        itemsList.add(data);
-        data = new items("10000", "Motorola Edge+ (Thunder Grey, 256 GB)  (12 GB RAM)", "https://rukminim1.flixcart.com/image/416/416/k9loccw0/mobile/h/f/h/motorola-racer-turbo-edge-xt2061-3-original-imafrcvgpqx23mcq.jpeg?q=70");
-        itemsList.add(data);
-        data = new items("15000", "Samsung Galaxy A31 (Prism Crush White, 128 GB)  (6 GB RAM)", "https://rukminim1.flixcart.com/image/416/416/kamtsi80/mobile/4/a/6/samsung-galaxy-a31-sm-a315fzwwins-original-imafs5p5y3gf4cej.jpeg?q=70");
-        itemsList.add(data);
-
+    @Override
+    public void onResume() {
+        getMoney();
+        super.onResume();
+        // do some stuff here
     }
 
     @SuppressLint("RestrictedApi")
@@ -247,7 +254,6 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         // Inflate the menu; this adds items to the action bar if it is present.
         this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_btn, menu);
-
         return true;
     }
 
@@ -383,7 +389,7 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         }
     }
 
-    @Override
+    /*@Override
     public void onServiceItemClicked(View view, int position, String price, String name, String image) {
         try {
             if (money >= Integer.parseInt(price)) {
@@ -399,5 +405,5 @@ public class MainActivity extends AppCompatActivity implements ItemsAdapter.Adap
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

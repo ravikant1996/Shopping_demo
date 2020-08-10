@@ -69,9 +69,6 @@ public class TransactionHistory extends AppCompatActivity {
     public void recycler1() {
         // layout visibility
         // Adding items to RecyclerView.
-        FirebaseUser user =  FirebaseAuth.getInstance().getCurrentUser();
-        String userId = user.getUid();
-        Log.e("UID", userId);
         DatabaseReference mRef = FirebaseDatabase.getInstance().getReference().child("Transaction_History");
         Query query = mRef.child(UID);
         query.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -83,8 +80,7 @@ public class TransactionHistory extends AppCompatActivity {
                         arrayList.add(details);
                     }
 
-                } catch (
-                        Exception e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
                 recyclerView.setHasFixedSize(true);

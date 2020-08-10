@@ -7,7 +7,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.RequestOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,11 +41,14 @@ class transactionAdapter extends RecyclerView.Adapter<transactionAdapter.ViewHol
             holder.name.setText(arrayList.get(position).getName());
             holder.date.setText(arrayList.get(position).getDate());
             holder.status.setText(arrayList.get(position).getStatus());
-            Picasso.get().load(arrayList.get(position).getImage()).into(holder.imageView);
+            RequestOptions requestOptions = new RequestOptions()
+                    .diskCacheStrategy(DiskCacheStrategy.ALL);
+
+            Glide.with(context).load(arrayList.get(position).getImage()).apply(requestOptions).into(holder.imageView);
 
         } catch (NullPointerException e) {
             e.printStackTrace();
-        }catch (IllegalArgumentException e){
+        } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
     }
