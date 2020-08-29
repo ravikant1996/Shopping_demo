@@ -66,11 +66,11 @@ public class LoginActivity extends AppCompatActivity {
                 .createSignInIntentBuilder()
                 .setAvailableProviders(providers)
                 .setIsSmartLockEnabled(!BuildConfig.DEBUG /* credentials */, true /* hints */)
-                .setTheme(R.style.AppThemeFirebaseAuth)
+                .setTheme(R.style.LoginTheme)
                 .setTosAndPrivacyPolicyUrls(
                         "https://www.google.com/",
                         "https://www.google.com/")
-                .setLogo(R.drawable.smartphone)
+                .setLogo(R.mipmap.ic_launcher)
                 .build(), MY_REQUEST_CODE);
 
     }
@@ -104,6 +104,7 @@ public class LoginActivity extends AppCompatActivity {
                     Toast.makeText(this, "" + Objects.requireNonNull(response.getError()).getMessage(), Toast.LENGTH_SHORT).show();
                 }
                 if (response == null) {
+                    finish();
                     // User pressed back button
 //                    Toast.makeText(LoginActivity.this, "" + response, Toast.LENGTH_SHORT).show();
                     return;
